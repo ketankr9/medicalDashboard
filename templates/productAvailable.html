@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Product Availability{% endblock %}
+{% block nav_items %}
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+  <h1 class="display-6">Product Availability At Our Shop.</h1>
+  <!-- <p class="lead">
+    Select product name starting from...
+    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+      <a class="page-link" href="#productpage">A</a>
+      <a class="page-link" href="#productpage">B</a>
+      <a class="page-link" href="#productpage">C</a>
+      <a class="page-link" href="#productpage">D</a>
+      <a class="page-link" href="#productpage">E</a>
+      <a class="page-link" href="#productpage">F</a>
+      <a class="page-link" href="#productpage">G</a>
+      <a class="page-link" href="#productpage">H</a>
+      <a class="page-link" href="#productpage">I</a>
+      <a class="page-link" href="#productpage">J</a>
+      <a class="page-link" href="#productpage">K</a>
+      <a class="page-link" href="#productpage">L</a>
+      <a class="page-link" href="#productpage">M</a>
+      <a class="page-link" href="#productpage">N</a>
+      <a class="page-link" href="#productpage">O</a>
+      <a class="page-link" href="#productpage">P</a>
+      <a class="page-link" href="#productpage">Q</a>
+      <a class="page-link" href="#productpage">R</a>
+      <a class="page-link" href="#productpage">S</a>
+      <a class="page-link" href="#productpage">T</a>
+      <a class="page-link" href="#productpage">U</a>
+      <a class="page-link" href="#productpage">V</a>
+      <a class="page-link" href="#productpage">W</a>
+      <a class="page-link" href="#productpage">X</a>
+      <a class="page-link" href="#productpage">Y</a>
+      <a class="page-link" href="#productpage">Z</a>
+    </div>
+  </p> -->
+</div>
+<!-- alphabet selection container -->
+<!--  card container starts-->
+
+<div class="container">
+    <div class="row">
+        {% for prod in data %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-block">
+                  <h4 class="card-title">{{ prod.name }}</h4>
+                  <h6 class="card-subtitle mb-2 text-muted">
+                    {% if prod.type == "bottles" %}
+                    <div-c id="per_leaf">{{ prod.quant }} bottle per pack</div-c>
+                    {% elif prod.type == "capsules" %}
+                    <div-c id="per_leaf">{{ prod.quant }} capsules per leaf</div-c>
+                    {% elif prod.type == "tablets" %}
+                    <div-c id="per_leaf">{{ prod.quant }} tablets per leaf</div-c>
+                    {% elif prod.type == "tubes" %}
+                    <div-c id="per_leaf">{{ prod.quant }} tubes per pack</div-c>
+                    {% else %}
+                    <div-c id="per_leaf">{{ prod.quant }} per pack</div-c>
+                    {% endif %}
+                  </h6>
+                  <div class="stock">
+
+                    <span class="">{{ prod.quantity }} Available</span>
+                  </div>
+                  <p class="card-text">
+                    {{ prod.desc }}
+                  </p>
+                  <p class="card-text">
+                    {{ prod.company }}
+                  </p>
+                  {% if prod.quantity == "0" %}
+                    <span class="badge badge-warning">
+                    Out of Stock
+                    </span>
+                  {% elif prod.quantity == 0 %}
+                  <span class="badge badge-warning">
+                    Out of Stock
+                    </span>
+                  {% else %}
+                    <span class="badge badge-primary">
+                      In Stock
+                    </span>
+                  {% endif %}
+                  <span class="badge badge-info">Rs.{{ prod.mrp }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+
+<!-- card container ends -->
+
+<!-- pagination -->
+<!-- <nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active">
+      <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav> -->
+{% endblock%}

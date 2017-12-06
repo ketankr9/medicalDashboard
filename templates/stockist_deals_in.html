@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block headinclude %} {% endblock %}
+
+{% block content %}
+<div class="container bggr">
+        <h1 class="display-8">Stockist deals in...</h1>
+        <p class="lead">This page contains the the products sold by "{{ data.seller }}" in our database.</p>
+</div>
+    <div class="container bggr">
+        <div class="row content">
+        
+        <b>Address:{{ data.address }}  Phone:{{ data.phone }}</b>
+        <table class="table table-striped" id="items">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Particular</th>
+              <th>Type</th>
+              <th>Company</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+                {% for i in data["medicines"] %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.type }}</td>
+                    <td>{{ i.comp }}</td>
+                    <td>{{ i.desc }}</td>
+                </tr>
+                 {% endfor %}
+          </tbody>
+        </table>
+        </div>
+    </div>
+      <div class="container bggr">
+        <h1 class="display-3">Krishna Medico</h1>
+        <p class="lead">With you, when you need it.</p>
+        </div>
+
+
+{% endblock %}

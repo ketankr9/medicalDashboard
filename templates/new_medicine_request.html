@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block headinclude %}
+
+<script>
+$(document).ready(function(){
+
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+    <h1 class="display-8">New Medicine Request</h1>
+    <p class="lead">Please submit only those medicine request  which
+      are either not available at <a href="/product_avail/">Product Availability</a>
+       page or they are not sold by us.</p> 
+</div>
+<div class="container">
+    <form action="/medicine_request/" method="post">
+      <div class="form-group row">
+        <label for="store_name" class="col-sm-2 col-form-label">Medicine Name</label>
+        <div class="col-sm-5">
+          <input type="text" name="med_name" class="form-control" id="" placeholder="Name of the medicine" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="Company" class="col-sm-2 col-form-label">Company</label>
+        <div class="col-sm-5">
+          <input type="text" name="company" class="form-control" id="phone_no" placeholder="Company of the medicine(if you know it)">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="type" class="col-sm-2 col-form-label">Type</label>
+        <div class="col-sm-5">
+          <input type="text" name="med_type" class="form-control"  placeholder="Capsule/Tablets/Bottles/Tubes/Other">
+        </div>
+      </div>
+      <div class="form-group row">
+            <label for="address" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-5">
+              <input type="text" name="users_name" class="form-control"  placeholder="Your Good name :)" required>
+            </div>
+    </div>
+      <div class="form-group row">
+            <label for="phone" class="col-sm-2 col-form-label">Phone No</label>
+            <div class="col-sm-5">
+              <input type="text" name="phone" class="form-control"  placeholder="Phone on which we can contact you." required>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="comment">Any comment</label>
+        <textarea class="form-control" rows="5" name="comment"></textarea>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2 col-form-label"></div>
+        <div class="col-sm-10">
+          <button class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

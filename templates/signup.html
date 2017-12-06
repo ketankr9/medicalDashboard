@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block headinclude %}
+<script>
+function checkme(){
+    if(document.getElementById("p1").value != document.getElementById("p2").value){
+        alert("Password not equal!");
+        return false;
+    }
+    if(document.getElementById("p1").value.length < 8){
+        alert("Password must be atleast 8 characters long!");
+        return false;
+    }
+    return true;
+};
+</script>
+{% endblock %}
+{% block content %}
+{{ data.msg }}
+<form action = "/adduser/" onsubmit="return checkme()" method = "post">
+        <p><input type = "text" name = "username" placeholder="username" /></p>
+        <p><input type = "password" name="passwd" placeholder="password" id="p1"/></p>
+        <p><input type = "password" name="passwd2" placeholder="repeat password" id="p2"/></p>
+        <p><button >Submit</button></p>
+</form>
+{% endblock %}

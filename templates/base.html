@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>{% block title %}{% endblock %}</title>
+<!-- Required meta tags -->
+  <!-- <meta content="text/html;charset=utf-8" http-equiv="Content-Type"> -->
+  <!-- <meta content="utf-8" http-equiv="encoding"> -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="{{ url_for('static',filename='jquery.min.js') }}"></script>
+  <script>
+    function payme(){
+      window.location = "/payme/";
+    };
+
+  </script>
+  {% block headinclude %}{% endblock %}
+  <style>
+  /* .bggr{
+    border: 1px solid black;
+  } */
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static',filename='bootstrap.min.css') }}" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+<body>
+  <!--  master container-->
+<div class="container-fluid">
+<nav class=" navbar fixed-top navbar-inverse navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <div class="row ">
+      <div class="nav-item ">
+        <a class="navbar-brand" href="/" style="color: white;">Krishna Medico</a>
+      </div>
+      <div class="nav-item ">
+        <a class="nav-link" href="/product_avail/" style="color: yellow;">Product Availability</a>
+      </div>
+      <!-- <div class="nav-item ">
+        <a class="nav-link" href="/sales/" style="color: yellow">Sales Report</a>
+      </div> -->
+      <div class="nav-item ">
+        <a class="nav-link" href="/medicine_request/" style="color: yellow;">Medicine Request</a>
+      </div>
+      <!-- <div class="nav-item ">
+        <a class="nav-link" href="//" style="color: yellow;">Sales Purchase</a>
+      </div> -->
+      <div class="nav-item ">
+        <a class="nav-link" href="/stockist/" style="color: yellow;">Stockist</a>
+      </div>
+      <!-- <div class="nav-item ">
+          <a class="nav-link" href="/contact_us/" style="color: yellow;">Contact Us</a>
+        </div> -->
+      {% if session["isLogged"] %}
+      <div class="nav-item ">
+      <div class="btn-group" role="group">
+          <button id="btnGroupDrop1" type="button"
+                  class="btn btn-secondary dropdown-toggle"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Hi {{ session["username"] }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+            <a class="dropdown-item" href="/invoice/">Generate Invoice</a>
+            <a class="dropdown-item" href="/medicine_request_list/">Med. Requests List</a>
+            <!-- <a class="dropdown-item" href="/sales/">Sales Report</a> -->
+            <a class="dropdown-item" href="/purchase_history/">Stock Purchase History</a>
+            <!-- <a class="dropdown-item" href="/sold_items/">Sold Items</a> -->
+            <a class="dropdown-item" href="/stock_pur/">Stock Purchase</a>
+            <a class="dropdown-item" href="/stockist_approval/">Stockist Approval</a>
+            <a class="dropdown-item" href="/logout/">Logout</a>
+          </div>
+      </div>
+      </div>
+      {% endif %}
+      <button class="btn btn-warning" onclick="payme()">Pay Krishna Medico</button>
+      {% block nav_items %}
+      {% endblock %}
+    </div>
+  </div>
+</nav> <!-- navbar -->
+
+<!--  -->
+<div class="col-xs-12" style="height:100px;"></div>
+{% block content %} {% endblock %}
+<!--  -->
+</div>
+<!-- Footer -->
+<footer class="py-1 bg-dark footer fixed-bottom">
+  <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; Krishna Medico 2017</p>
+  </div>
+  <!-- /.container -->
+</footer>
+<!--  master container ends here-->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- The Below commented line was conflicting with google api jquery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+<!--   "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/" -->
+    <script src="{{ url_for('static',filename='popper.min.js') }}" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <!-- https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/ -->
+    <script src="{{ url_for('static',filename='bootstrap.min.js') }}" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  </body>
+  </html>

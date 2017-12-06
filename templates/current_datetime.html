@@ -1,0 +1,115 @@
+<html>
+  <head onload="submitPayuForm()">
+  <script type="text/javascript">
+    var hash = "{{ hashh }}";
+    function submitPayuForm() {
+      if(hash =='') {
+        return;
+      }
+      var payuForm = document.forms.payuForm;
+      payuForm.submit();
+    }
+  </script>
+  </head>
+  <body>
+    <h2>Payment Page</h2>
+    <br/>
+    {% if error %}
+
+      <span style="color:red">Please fill all mandatory fields.</span>
+      <br/>
+      <br/>
+      {% endif %}
+
+      <form action={{ action }} method="post" name="payuForm">
+      <input type="hidden" name="key" value="{{ MERCHANT_KEY }}" />
+      <input type="hidden" name="hash_string" value="{{ hash_string }}" />
+      <input type="hidden" name="hash" value="{{ hashh }}"/>
+       <input type="hidden" name="posted" value="{{ posted }}"/>
+      <input type="hidden" name="txnid" value="{{ txnid }}" />
+      <table>
+        <tr>
+          <td><b>Mandatory Parameters</b></td>
+        </tr>
+        <tr>
+         <td>Amount: </td>
+
+          <td><input name="amount" value="{{ posted.amount }}" required/></td>
+          <td>First Name: </td>
+          <td><input name="firstname" id="firstname" value="{{ posted.firstname }}" required /></td>
+        </tr>
+        <tr>
+          <td>Email: </td>
+          <td><input name="email" id="email" value="{{ posted.email }}" required /></td>
+          <td>Phone: </td>
+          <td><input name="phone" value="{{ posted.phone }}" required/></td>
+        </tr>
+        <tr>
+          <td>Reason for Payment:</td>
+          <td colspan="3"><textarea name="productinfo" required>{{ posted.productinfo }}</textarea></td>
+        </tr>
+        <tr hidden>
+          <td>Success URI: </td>
+          <td colspan="3"><input name="surl" value="http://ec2-34-208-110-47.us-west-2.compute.amazonaws.com:8080/success/" size="64" hidden/></td>
+        </tr>
+        <tr hidden>
+          <td>Failure URI: </td>
+          <td colspan="3"><input name="furl" value="http://ec2-34-208-110-47.us-west-2.compute.amazonaws.com:8080/failure/" size="64" hidden/></td>
+        </tr>
+        <tr>
+          <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" required/></td>
+        </tr>
+        <!-- <tr>
+          <td><b>Optional Parameters</b></td>
+        </tr>
+        <tr>
+          <td>Last Name: </td>
+          <td><input name="lastname" id="lastname" value="{{ posted.lastname }}" /></td>
+          <td>Cancel URI: </td>
+          <td><input name="curl" value="" /></td>
+        </tr>
+        <tr>
+          <td>Address1: </td>
+          <td><input name="address1" value="{{ posted.address1 }}" /></td>
+          <td>Address2: </td>
+          <td><input name="address2" value="{{ posted.address2 }}" /></td>
+        </tr>
+        <tr>
+          <td>City: </td>
+          <td><input name="city" value="{{ posted.city }}" /></td>
+          <td>State: </td>
+          <td><input name="state" value="{{ posted.state }}" /></td>
+        </tr>
+        <tr>
+          <td>Country: </td>
+          <td><input name="country" value="{{ posted.country }}" /></td>
+          <td>Zipcode: </td>
+          <td><input name="zipcode" value="{{ posted.zipcode }}" /></td>
+        </tr>
+        <tr>
+          <td>UDF1: </td>
+          <td><input name="udf1" value="{{ posted.udf1 }}" /></td>
+          <td>UDF2: </td>
+          <td><input name="udf2" value="{{ posted.udf2 }}" /></td>
+        </tr>
+        <tr>
+          <td>UDF3: </td>
+          <td><input name="udf3" value="{{ posted.udf3 }}" /></td>
+          <td>UDF4: </td>
+          <td><input name="udf4" value="{{ posted.udf4 }}" /></td>
+        </tr>
+        <tr>
+          <td>UDF5: </td>
+          <td><input name="udf5" value="{{ posted.udf5 }}" /></td>
+          <td>PG: </td>
+          <td><input name="pg" value="{{ posted.PG }}" /></td>
+        </tr> -->
+
+     <td colspan="4"><input type="submit" value="Submit" /></td>
+
+
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

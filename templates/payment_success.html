@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center">
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">Thank You {{ firstname }} :)</h4>
+		Your order status is {{ status }}.
+		<h4>Your Transaction ID for this transaction is {{ txnid }}</h4>
+		<h4>We have received a payment of Rs {{ amount }}</h4>
+      </div>
+</div>
+{% endblock %}

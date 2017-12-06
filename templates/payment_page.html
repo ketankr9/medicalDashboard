@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block headinclude %}
+<script src= "https://www.payumoney.com/Api/REST/op/buttonScript" async="true" > </script>
+<script>
+$(document).ready(function(){
+  function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+};
+    $("#25C725A06430BEAB2FD9140DF417675A").click(function(){
+          window.PUM.setData(document.getElementById('val').value, makeid(),"product");
+          window.PUM.pay();
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+        <h1 class="display-8">Payment Page</h1>
+        <p class="lead">Please enter your phone and email id on the next payment page, on which you will get payment status.</p>
+</div>
+<div class="container">
+          <div class="form-group row">
+            <label for="store_name" class="col-sm-2 col-form-label">Payment Amount (INR)</label>
+            <div class="col-sm-2">
+              <input type="number" name="money" class="form-control" id="val" placeholder="rupees" required>
+            </div>
+          </div>
+          <div class="form-group row">
+        <div class="col-sm-2 col-form-label"></div>
+          <span class='pm-button btn btn-primary'  id='25C725A06430BEAB2FD9140DF417675A' onclick="window.PUM.pay()">
+                <span class="state active">
+                  <input type="image" src="" width="131" height="37"  style="color:white;" value="Pay Me">
+                </span>
+                <span class="state clicked" style="display:none" >
+                  <input type="image" src="" width="131" height="37" value="Redirecting...">
+                </span>
+            </span>
+        </div>
+</div>
+{% endblock %}

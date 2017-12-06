@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Stockist{% endblock %}
+{% block headinclude %}
+<script>
+$(document).ready(function(){
+  $("#newstkist").click(function () {
+    window.location= "/new_stockist/";
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+  <h1 class="display-8">New Medicine Request</h1>
+  <p class="lead">Medicines either not available in our stock or not sold by us.</p>
+</div>
+<div class="container container-fluid">
+<table class="table table-responsive table-hover table-striped">
+
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Particular</th>
+        <th>Company</th>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Comment</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for i in data %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ i.name }}</td>
+          <td>{{ i.company }}</td>
+          <td>{{ i.med_type }}</td>
+          <td>{{ i.users_name }}</td>
+          <td>{{ i.phone }}</td>
+          <td>{{ i.comment }}</td>
+          <td>{{ i.submitted_on }}</td>
+        </tr>
+    {% endfor %}
+
+
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

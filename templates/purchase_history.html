@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Krishna Medico: Purchase History{% endblock %}
+{% block content %}
+
+<div class="container bggr">
+    <h1 class="display-8">Purchase History</h1>
+    <p class="lead">This page contains the purchases made from stockists over time</p>
+</div>
+<div class="container bggr">
+    <div class="row content">
+            <!-- <table class="table table-striped" id="items">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Particulars</th>
+                        <th>Expiry</th>
+                        <th>Units</th>
+                        <th>Per Unit</th>
+                        <th>M.R.P</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+                        <th>Disc%</th>
+                        <th>GST%</th>
+                      </tr>
+                    </thead>
+            </table> -->
+    {% for p in data %}
+    <b>Txn Id:{{ p.id }} Seller: {{ p.seller }} Date: {{ p.pd }} Paid:{{ p.ap }}</b>
+    <table class="table table-striped" id="items">
+      <!-- <thead>
+        <tr>
+          <th>{{ p.id }}</th>
+          <th></th>
+          <th>Seller:{{ p.seller }}</th>
+          <th></th>
+          <th>Date:{{ p.pd }}</th>
+          <th></th>
+          <th>Paid:{{ p.ap }}</th>
+        </tr>
+      </thead> -->
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Particulars</th>
+          <th>Expiry</th>
+          <th>Units</th>
+          <th>Per Unit</th>
+          <th>M.R.P</th>
+          <th>Rate</th>
+          <th>Amount</th>
+          <th>Disc%</th>
+          <th>GST%</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+            {% for i in p["items"] %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ i.p }}</td>
+                <td>{{ i.e }}</td>
+                <td>{{ i.u }}</td>
+                <td>{{ i.pu }}</td>
+                <td>{{ i.m }}</td>
+                <td>{{ i.r }}</td>
+                <td>{{ i.a }}</td>
+                <td>{{ i.d }}</td>
+                <td>{{ i.g }}</td>
+            </tr>
+             {% endfor %}
+      </tbody>
+    </table>
+    {% endfor %}
+    </div>
+</div>
+  <div class="container bggr">
+    <h1 class="display-3">Krishna Medico</h1>
+    <p class="lead">With you, when you need it.</p>
+    </div>
+{% endblock %}

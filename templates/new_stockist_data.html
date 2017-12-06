@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}New Stockist Data{% endblock %}
+{% block headinclude %}
+<script>
+$(document).ready(function(){
+
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+  <h1 class="display-8">New Stockists</h1>
+  <p class="lead">Stockist interested in doing business with us.</p>
+</div>
+<div class="container container-fluid">
+<table class="table table-responsive table-hover table-striped">
+
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Submitted On</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for i in data %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ i.name }}</td>
+          <td>{{ i.phone }}</td>
+          <td>{{ i.address }}</td>
+          <td>{{ i.submitted_on }}</td>
+        </tr>
+    {% endfor %}
+
+
+    </tbody>
+</table>
+
+</div>
+{% endblock %}

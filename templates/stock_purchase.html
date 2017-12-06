@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+  {% block title %}Stock Purchase{% endblock %}
+  {% block headinclude %}
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+  });
+  function clearall(){
+    document.getElementById("tbody").innerHTML="";
+  };
+  function submitall(){
+    var elements=document.getElementsByClassName('childnode');
+    var arr=[];
+    for (var i = 0; i < elements.length; i++) {
+      var ch=elements[i].childNodes;
+      arr[i]={"particular":ch[1].className,"expiry":ch[2].innerHTML,
+      "units":ch[3].innerHTML,"perunit":ch[4].innerHTML,"mrp":ch[5].innerHTML,
+      "rate":ch[6].innerHTML,"amount":ch[7].innerHTML,"disc":ch[8].innerHTML,
+      "gst":ch[9].innerHTML};
+    }
+    var p = document.getElementById("sellerselect");
+    var tpaid = parseInt(document.getElementById('paid').value);
+    // alert(JSON.stringify([arr,sell])
+    var DATA={"seller":p.options[p.selectedIndex].value,"items":arr,"comment":document.getElementById('comment').value,"paid":tpaid};
+    $.ajax({
+    type: "POST",
+    url: "/purchase_submit/",
+    data: JSON.stringify(JSON.stringify(DATA)),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){
+      alert("Database Updated Successfully.");
+      clearall();
+      },
+    error: function(errMsg) {
+        alert("Failed to submit!");
+      }
+    });
+
+};
+function validate(){
+  if(document.getElementById('unitsf').value==""){
+      alert("Please enter quantity"); return true;
+    }
+  if(document.getElementById('gstf').value==""){
+      alert("Please enter GST"); return true;
+    }
+  if(document.getElementById('discf').value==""){
+      alert("Please enter Discount Percentage"); return true;
+    }
+
+  return false;
+
+};
+  function additems(){
+    // alert($("#particularsf").val());
+    var amt=parseFloat(document.getElementById('unitsf').value)*parseFloat(document.getElementById('ratef').value);
+    var gst=parseFloat(document.getElementById('gstf').value);
+    var disc=parseFloat(document.getElementById('discf').value);
+    var p = document.getElementById("particularsf");
+    if(validate())
+      return false;
+    document.getElementById("tdisc").value=parseFloat(document.getElementById("tdisc").value)+amt*disc/parseFloat(100.0);
+    document.getElementById("ttax").value=parseFloat(document.getElementById("ttax").value)+amt*gst/parseFloat(100.0);
+
+    // amt=amt+parseFloat(amt*(gst-disc))/parseFloat(100.0);
+    document.getElementById("gross").value=parseFloat(document.getElementById("gross").value)+amt;
+    document.getElementById("paid").value=parseFloat(document.getElementById("gross").value)+parseFloat(document.getElementById("ttax").value)-parseFloat(document.getElementById("tdisc").value);
+    document.getElementById('tbody').innerHTML+=
+    '<tr class="childnode" ><td>*</td><td class='+
+    p.options[p.selectedIndex].value+
+    '>'+
+    p.options[p.selectedIndex].text+
+    '</td><td>'+document.getElementById('expiryf').value+
+    '</td><td>'+document.getElementById('unitsf').value+
+    '</td><td>'+p.options[p.selectedIndex].dataset.q+
+    '</td><td>'+p.options[p.selectedIndex].dataset.m+
+    '</td><td>'+document.getElementById('ratef').value+
+    '</td><td>'+amt+
+    '</td><td>'+disc+
+    '</td><td>'+gst+
+    '</td></tr>';
+
+    
+  };
+  function updateinfo(){
+    var p = document.getElementById("particularsf");
+    var mrp=p.options[p.selectedIndex].dataset.m;
+    var quant=p.options[p.selectedIndex].dataset.q;
+    document.getElementById("mrpf").value=mrp;
+    document.getElementById("perunitf").value=quant;
+    document.getElementById("ratef").value=mrp;
+  };
+  </script>
+  {% endblock %}
+  {% block content %}
+  <div class="container bggr">
+    <!-- <div class="container-fluid bggr">
+
+        <div class="form-group row">
+          <label for="inputPassword3" class="col-sm-2 form-control-label">Product Name</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="prodName" placeholder="Product Name">
+          </div>
+          <label for="inputPassword3" class="col-sm-1 form-control-label">Quantity</label>
+          <div class="col-sm-1">
+            <input type="text" class="form-control" id="quantity" placeholder="Card Number">
+          </div>
+          <label for="inputPassword3" class="col-sm-1 form-control-label">Rate</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="rate" placeholder="Card Number">
+          </div>
+          <div class="col-sm-2">
+            <button id="btn" class="button" onclick="additem()">Add item</button>
+          </div>
+        </div>
+        </div> -->
+        <div class="container-fluid">
+          <div class="row content">
+            <div class="form-group row">
+              <label for="inputEmail3" class="font-weight-bold">Seller</label>
+              <div class="col-sm-5">
+                <select id="sellerselect" class="custom-select">
+                  <option selected>Select seller</option>
+                  {% for seller in arr[0] %}
+                  <option value="{{ seller.id }}">{{ seller.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row content">
+            <table class="table table-striped" id="items">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Particulars</th>
+                  <th>Expiry</th>
+                  <th>Units</th>
+                  <th>Per Unit</th>
+                  <th>M.R.P</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                  <th>Disc%</th>
+                  <th>GST%</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+              </tbody>
+              <!-- <tr>
+                <th scope="row">*</th>
+                <td></td>
+                <td></td>
+                <th>Total</th>
+                <th id="tamount">0</th>
+              </tr> -->
+              <tr>
+                <th>*</th>
+                <th>
+                  <select id="particularsf" class="custom-select" onchange="updateinfo()">
+                    <option selected>Select Item</option>
+                    {% for medicine in arr[1] %}
+                    <option value="{{ medicine.code }}" data-q="{{ medicine.quant }}" data-m="{{ medicine.mrp }}">{{ medicine.name }}</option>
+                    {% endfor %}
+                  </select>
+                </th>
+                <th><input type="date" class="form-control" id="expiryf" min="2017-01-01" value="2017-01-01" placeholder="Expiry"></th>
+                <th><input type="number" class="form-control" id="unitsf" min="1"  placeholder="Units"></th>
+                <th><input type="number" class="form-control" id="perunitf" min="1"  placeholder="P.U" readonly></th>
+                <th><input type="text" class="form-control" id="mrpf" placeholder="M.R.P" min="0" readonly></th>
+                <th><input type="text" class="form-control" id="ratef" placeholder="Rate" min="0"></th>
+                <th><input type="text" class="form-control" id="amountf" placeholder="Amt" min="0" readonly></th>
+                <th><input type="text" class="form-control" id="discf" placeholder="%" min="0"></th>
+                <th><input type="text" class="form-control" id="gstf" placeholder="%" min="0"></th>
+              </tr>
+            </table>
+          </div>
+          <div class="row content">
+            <button class="btn btn-primary" onclick="additems()">Add</button>
+          </div>
+        </div>
+      </br></br></br>
+        <div class="container">
+          <form>
+            <div class="input-group row">
+              <span class="input-group-addon">Product Value</span>
+              <input type="text" class="col-sm-1 form-control" id="gross" value="0" aria-label="">
+              <div class="col-sm-1"> </div>
+              <span class="input-group-addon">Discount (Rs) </span>
+              <input type="text" class="col-sm-1 form-control" id="tdisc" aria-label="" value="0">
+              <div class="col-sm-1"> </div>
+              <span class="input-group-addon">Tax (Rs) </span>
+              <input type="text" class="col-sm-1 form-control" id="ttax" aria-label="" value="0">
+              <div class="col-sm-1"> </div>
+              <span class="input-group-addon">Paid (Rs) </span>
+              <input type="text" class="col-sm-1 form-control" id="paid" aria-label="" value="0">
+            </div>
+          </br>
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+            <div class="input-group row">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submitall()">Submit</button>
+            </div>
+          </form>
+        </div>
+          <div class="col-xs-12" style="height:50px;"></div>
+
+      </div>
+      {% endblock %}

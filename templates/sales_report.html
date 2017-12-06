@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block headinclude %}
+<script src="{{ url_for('static',filename='Chart.min.js') }}"></script>
+<script>
+new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [1500,1600,1700],
+    datasets: [{
+        data: [86,114,106],
+        label: "Africa",
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: [282,350,411],
+        label: "Asia",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: [168,170,178],
+        label: "Europe",
+        borderColor: "#3cba9f",
+        fill: false
+      }, {
+        data: [40,20,10],
+        label: "Latin America",
+        borderColor: "#e8c3b9",
+        fill: false
+      }, {
+        data: [6,3,2],
+        label: "North America",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'World population per region (in millions)'
+    }
+  }
+});
+</script>
+
+<style>
+/* Set black background color, white text and some padding */
+footer {
+  background-color: #555;
+  color: white;
+  padding: 15px;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height: auto;}
+}
+</style>
+{% endblock %}
+{% block title %}Sales Report{% endblock %}
+{% block content %}
+
+  <div class="container-fluid text-center">
+    <div class="row content">
+      <div class="col-sm-2 sidenav">
+        <p><a href="#">Dashboard</a></p>
+        <p><a href="#">Daily</a></p>
+        <p><a href="#">Monthly</a></p>
+        <p><a href="#">Yearly</a></p>
+      </div>
+
+      <div class="col-sm-10 text-left">
+        <div class="card-deck" style="height: 200px;border:1px solid yellow;">
+          <div class="card card-outline-primary text-center">
+            <div class="card-block">
+              <h4 class="card-title">Today</h4>
+              <p class="card-text"><img src="#" alt="today's profit image"></p>
+            </div>
+          </div>
+          <div class="card card-outline-primary text-center">
+            <div class="card-block">
+              <h4 class="card-title">This week</h4>
+              <p class="card-text"><img src="#" alt="this week's profit image"></p>
+            </div>
+          </div>
+          <div class="card card-outline-primary text-center">
+            <div class="card-block">
+              <h4 class="card-title">This month</h4>
+              <p class="card-text"><img src="#" alt="this month's profit image"></p>
+            </div>
+          </div>
+          <div class="card card-outline-primary text-center">
+            <div class="card-block">
+              <h4 class="card-title">This year</h4>
+              <p class="card-text"><img src="#" alt="this year's profit image"></p>
+            </div>
+          </div>
+        </div><!-- card deck -->
+
+          <div class="card-deck" style="height: 200px;border:1px solid yellow;">
+            <div class="card card-outline-primary text-center">
+              <div class="card-block">
+                <h4 class="card-title">This year</h4>
+                <div style="width:200px; height:200px;">
+                  <canvas id="line-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div><!-- card deck -->
+      </div><!-- col-10 -->
+    </div>
+  </div>
+  <!-- <div style="width:100%;">
+      <canvas id="line-chart" width="80" height="45"></canvas>
+  </div> -->
+{% endblock %}

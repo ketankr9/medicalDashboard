@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+  {% block title %}Invoice Generation{% endblock %}
+  {% block headinclude %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+};
+// document.getElementById("billno").innerHTML="Bill Id: "+makeid();
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+
+var yyyy = today.getFullYear();
+if(dd<10){
+    dd='0'+dd;
+} 
+if(mm<10){
+    mm='0'+mm;
+} 
+var today = dd+'/'+mm+'/'+yyyy;
+document.getElementById("date").innerHTML ="Date: " +today;
+  });
+  // function changed(){
+  //   var p = document.getElementById("prodName");
+  //     alert("hi");
+  //   };
+  function get_paymode(){
+    if(document.getElementById("c").checked)
+      return "c"
+    else if (document.getElementById("p").checked)
+      return "p"
+    else if (document.getElementById("u").checked)
+      return "u"
+    else if (document.getElementById("k").checked)
+      return "k"
+    else if (document.getElementById("d").checked)
+      return "d"
+
+    
+  }
+  function submitall(){
+    // alert(document.getElementById("pay_radio").value);
+    var elements=document.getElementsByClassName('childnode');
+    var arr=[];
+    for (var i = 0; i < elements.length; i++) {
+      var ch=elements[i].childNodes;
+      arr[i]={"particular":ch[1].className,"quantity":ch[2].innerHTML,
+      "rate":ch[3].innerHTML,"amount":ch[4].innerHTML};
+    }
+    var tpaid = parseInt(document.getElementById('paid').value);
+    var tamt=document.getElementById("tamount").innerHTML;
+    var pay_modee=get_paymode();
+    var DATA={"items":arr,
+    "comment":document.getElementById('comment').value,"paid":tpaid,"tamt":tamt,
+    "name":document.getElementById("name").value,"address":document.getElementById("address").value,
+    "phone":document.getElementById("phone").value,"txn_id":document.getElementById("billno").innerHTML,
+    "pay_mode":get_paymode() };
+    // alert(JSON.stringify(DATA));
+    $.ajax({
+    type: "POST",
+    url: "/invoice_submit/",
+    data: JSON.stringify(JSON.stringify(DATA)),
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    success: function(data){
+      alert("Database Updated Successfully.");
+      location.reload();
+      // clearall();
+      },
+    error: function(errMsg) {
+        alert("Failed to submit!");
+      }
+    });
+
+};
+
+  var count=0;
+  function additem(){
+    var p = document.getElementById("prodName");
+    
+    var quantity=document.getElementById("quantity").value;
+    if(parseInt(p.options[p.selectedIndex].dataset.q)<parseInt(quantity)){
+      alert("Only "+p.options[p.selectedIndex].dataset.q+" in stock :(");
+      return 0;
+    }
+
+    count+=1;
+    p.options[p.selectedIndex].dataset.q =parseInt(p.options[p.selectedIndex].dataset.q) - quantity;
+    // var rate=eval(document.getElementById("rate").value);
+    var rate=parseFloat(p.options[p.selectedIndex].dataset.m);
+    document.getElementById("tbody").innerHTML+=
+    '<tr class="childnode" ><td>*</td><td class='+
+    p.options[p.selectedIndex].value+
+    '>'+
+    p.options[p.selectedIndex].text+
+    // '<tr class="childNode"><th scope="row">'+count+'</th><td class="">'
+    // +document.getElementById("prodName").value+
+    '</td><td>'
+    +quantity+
+    '</td><td>'
+    +rate+
+    '</td><td class="tamt">'
+    +(rate*quantity)+
+    '</td></tr>';
+
+    // alert(count);
+    document.getElementById("tamount").innerHTML=(rate*quantity)+parseFloat(document.getElementById("tamount").innerHTML);
+    document.getElementById("paid").value=document.getElementById("tamount").innerHTML;
+    // alert(sum);
+  };
+  </script>
+  {% endblock %}
+  {% block content %}
+  <div class="container bggr">
+    <div class="container-fluid bggr">
+      <!-- <div class="input-group row"> -->
+        <!-- <span class="input-group-addon">Product Name </span>
+        <input type="text" id="prodName" class="col-sm-3 form-control" aria-label="Product name">
+        <span class="input-group-addon">Quantity </span>
+        <input type="text" id="quantity" class="col-sm-1 form-control" aria-label="Quantity">
+        <span class="input-group-addon">Rate </span>
+        <input type="text" id="rate" class="col-sm-1 form-control" aria-label="rate">
+        <button id="btn" onclick="additem()">Add item</button> -->
+      <!-- </div> -->
+      <div class="row content">
+        <div class="col-sm-6 sidenav">
+          <h1 class="display-5">Krishna Medico</h1>
+          <p class="">Nutan Das Clinic, Opp. SBI ATM,</br>
+            Kadirabad Chowk,
+            Darbhanga,</br>
+            Bihar, INDIA 846004 </br>
+            Ph No: +91 98765 43210</p>
+          </div>
+          <div class="col-sm-6 sidenav">
+            <!-- <h1 class="display-5">Invoice</h1> -->
+            <p class="lead">Retail Invoice / GSTIN:10BL2PS5407EIZY</p>
+            <p class="lead" >Bill No: <div id="billno">{{ data["txn_id"] }}</div></p>
+            <p id="date">Date: xx/xx/xxxx</p>
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+
+          <div class="row content">
+            <table class="table table-striped" id="items">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Particulars </th>
+                  <th>Quantity</th>
+                  <th>Rate(INR)</th>
+                  <th>Amount(INR)</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+              </tbody>
+              <tr>
+                <th scope="row">*</th>
+                <td></td>
+                <td></td>
+                <th>Total</th>
+                <th id="tamount">0</th>
+              </tr>
+            </table>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-2 form-control-label">Product Name</label>
+            <div class="col-sm-2">
+              <select id="prodName" class="custom-select" >
+                  <option value="" selected>Select an item</option>
+                {% for medicine in data["items"] %}
+                <option value="{{ medicine.stk_id }}" data-q="{{ medicine.quant }}" data-m="{{ medicine.mrp }}">{{ medicine.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <label for="inputPassword3" class="col-sm-1 form-control-label">Quantity</label>
+            <div class="col-sm-1">
+              <input type="text" class="form-control" id="quantity" placeholder="Qty">
+            </div>
+            <!-- <label for="inputPassword3" class="col-smysqldump -u root -p krishnamedico > ~/dbms/backkrishnamedico.sqlm-1 form-control-label">Rate</label> -->
+            <!-- <div class="col-sm-2"> -->
+              <!-- <input type="text" class="form-control" id="rate" placeholder="Rate"> -->
+            <!-- </div> -->
+            <div class="col-sm-2">
+              <button id="btn" class="button btn-primary" onclick="additem()">Add item</button>
+            </div>
+          </div>
+          <div id="detail"></div>
+          <div class="row content">
+            <div class="col-sm-4">
+              <b>Payment Mode</b>
+            </div>
+            <div class="col-sm-8">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="pay_radio" id="c" value="c" checked>
+                  Cash
+                </label>
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="pay_radio" id="p" value="p">
+                  Paytm Wallet
+                </label>
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="pay_radio" id="u" value="u">
+                  UPI
+                </label>
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="pay_radio" id="k" value="k">
+                  Check
+                </label>
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio" name="pay_radio" id="d" value="d">
+                  Debit/Credit Card
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <form>
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-2 form-control-label">Name</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="name" placeholder="Patients Name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword3" class="col-sm-2 form-control-label">Address</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="address" placeholder="Address">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword3" class="col-sm-2 form-control-label">Phone</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="phone" placeholder="Phone">
+              </div>
+            </div>
+          </form>
+        </div>
+      </br>
+        <!-- <div class="container">
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-2 form-control-label">Paytm Reg. No</label>
+              <div class="col-sm-4">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Paytm Registered Number">
+              </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="form-group row">
+              <label for="inputEmail3" class="col-sm-2 form-control-label">UPI VPA</label>
+              <div class="col-sm-4">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Virtual Payment Address">
+              </div>
+            </div>
+        </div> -->
+</br>
+        <div class="container">
+          <form>
+            <div class="input-group row">
+              <div class="col-sm-7"></div>
+              <span class="input-group-addon">Paid </span>
+              <span class="input-group-addon">Rs.</span>
+              <input type="text" id="paid" class="col-sm-1 form-control" aria-label="Amount (to the nearest dollar)">
+              <div class="col-sm-1"> </div>
+              <!-- <span class="input-group-addon">Due </span>
+              <span class="input-group-addon">Rs.</span>
+              <input type="text" class="col-sm-1 form-control" aria-label="Amount (to the nearest dollar)"> -->
+            </div>
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+          </form>
+        </div>
+        <button class="btn btn-primary" onclick="submitall()" >Submit</button>
+          <div class="col-xs-12" style="height:100px;"></div>
+
+      </div>
+      {% endblock %}
+      <!--  -->
+    <!-- </div> -->
+    <!--  master container ends here-->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script> -->
+  <!-- </body> -->
+  <!-- </html> -->

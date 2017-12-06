@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Title and styles go here -->
+
+<head>
+	<title>Workshop Frontend</title>
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+
+<!-- Body of html starts here -->
+
+<body>
+	<div class="container">
+		<div id="upperHalfWrapper">
+			<div class="inputBoxWrapper"><input id="name" type='text' placeholder="Name" /> </div>
+			<div class="inputBoxWrapper"><input id="groupNo" type='text' placeholder="Group number" /> </div>
+			<div class="inputBoxWrapper"><input id="email" type='text' placeholder="Email-ID" /> </div>
+		</div>
+		<div id="bottomHalfWrapper">
+			<div class="submitButtonWrapper">
+				<div class="button" id="resetButton" onclick="console.log('Reset'); reset();">Reset</div>
+				<div class="button" id="sendButton" onclick="console.log('Sending data to server'); sendRequest();">Send</div>
+			</div>
+		</div>
+</body>
+
+<!-- Importing cutom javasctipt externally -->
+
+<script type="text/javascript" src="./js/main.js"></script>
+
+</html>

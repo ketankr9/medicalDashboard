@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Stockist{% endblock %}
+{% block headinclude %}
+<script>
+$(document).ready(function(){
+  $("#newstkist").click(function () {
+    window.location= "/new_stockist/";
+  });
+});
+</script>
+{% endblock %}
+{% block content %}
+<div class="container bggr">
+  <h1 class="display-8">Stockists</h1>
+  <p class="lead">The list of all stockist we purchase from.</p>
+    You think you can provide a better price! Fill this form and we will get back to you soon.
+   <button id="newstkist" class="btn btn-primary">Form</button>
+</div>
+<div class="container container-fluid">
+<table class="table table-responsive table-hover">
+
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Store Name</th>
+        <th>Phone No.</th>
+        <th>Address</th>
+        <th>Deals In</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+    {% for item in data %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ item.store }}</td>
+          <td>{{ item.phone }}</td>
+          <td>{{ item.address }}</td>
+          <td><a href="/stockist_deals/{{ item.link }}">Link</a></td>
+        </tr>
+    {% endfor %}
+
+
+    </tbody>
+</table>
+
+</div>
+{% endblock %}
