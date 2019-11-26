@@ -386,8 +386,8 @@ def status():
 @app.route('/test/',methods=["GET","POST"])
 def test():
     MERCHANT_KEY = key
-    
     SALT = salt
+    
     PAYU_BASE_URL = "https://secure.payu.in/_payment"
     action = ''
     posted={}
@@ -418,12 +418,15 @@ def test():
     # print hash_string,hashh
     action =PAYU_BASE_URL
     # print ""
+
     if request.method=="POST":
+        S_URL = "http://localhost:5000"
+        posted['surl'], posted['furl'] = S_URL+url_for('success'), S_URL+url_for('failure')
         return render_template('current_datetime.html',posted=posted,hashh=hashh,MERCHANT_KEY=MERCHANT_KEY,txnid=txnid,hash_string=hash_string,action=PAYU_BASE_URL )
     else:
         # return "yay"
         # print posted
-        return render_template('current_datetime.html',posted=posted,hashh=hashh,MERCHANT_KEY=MERCHANT_KEY,txnid=txnid,hash_string=hash_string,action="." )
+        return render_template('current_datetime.html',posted=posted,hashh="",MERCHANT_KEY=MERCHANT_KEY,txnid=txnid,hash_string=hash_string,action="." )
 
 @app.route('/success/',methods=["POST","GET"])
 def success():
@@ -435,7 +438,7 @@ def success():
 	key=request.form["key"]
 	productinfo=request.form["productinfo"]
 	email=request.form["email"]
-	
+
 	try:
 		additionalCharges=request.form["additionalCharges"]
 		retHashSeq=additionalCharges+'|'+salt+'|'+status+'|||||||||||'+email+'|'+firstname+'|'+productinfo+'|'+amount+'|'+txnid+'|'+key

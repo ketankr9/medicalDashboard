@@ -1,5 +1,5 @@
 <html>
-  <head onload="submitPayuForm()">
+  <head>
   <script type="text/javascript">
     var hash = "{{ hashh }}";
     function submitPayuForm() {
@@ -11,7 +11,7 @@
     }
   </script>
   </head>
-  <body>
+  <body onload="submitPayuForm()">
     <h2>Payment Page</h2>
     <br/>
     {% if error %}
@@ -50,11 +50,11 @@
         </tr>
         <tr hidden>
           <td>Success URI: </td>
-          <td colspan="3"><input name="surl" value="http://ec2-34-208-110-47.us-west-2.compute.amazonaws.com:8080/success/" size="64" hidden/></td>
+          <td colspan="3"><input name="surl" value="{{ posted.surl }}" size="64" hidden/></td>
         </tr>
         <tr hidden>
           <td>Failure URI: </td>
-          <td colspan="3"><input name="furl" value="http://ec2-34-208-110-47.us-west-2.compute.amazonaws.com:8080/failure/" size="64" hidden/></td>
+          <td colspan="3"><input name="furl" value="{{ posted.furl }}" size="64" hidden/></td>
         </tr>
         <tr>
           <td colspan="3"><input type="hidden" name="service_provider" value="payu_paisa" size="64" required/></td>
